@@ -1,0 +1,35 @@
+network_security_config.xml
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!--Set application-wide security config using base-config tag.-->
+    <base-config cleartextTrafficPermitted="true"/>
+</network-security-config>
+
+@Override
+    protected void onResume() {
+        super.onResume();
+        new Thread(runnable).start();
+
+
+    }
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            Bundle data = msg.getData();
+            //从data中拿出存的数据
+
+            Log.i("DDD",data.getString("value"));
+            //将数据进行显示到界面等操作
+        }
+    };
+    Runnable runnable = new Runnable(){
+        @Override
+        public void run(){
+            //进行访问网络操作
+            Message msg = Message.obtain();
+            Bundle data = new Bundle();
+            data.putString("value", HttpClient.doPost("http://api.waditu.com",s));
+            msg.setData(data);
+            handler.sendMessage(msg);
+        }
+    };
